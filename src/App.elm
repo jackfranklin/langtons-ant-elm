@@ -2,7 +2,7 @@ module App exposing (..)
 
 import Html exposing (Html)
 import AllDict exposing (AllDict)
-import Svg exposing (Svg, rect, svg, text, text_)
+import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, width, height, x, y, viewBox, stroke)
 import Time exposing (Time)
 
@@ -191,8 +191,7 @@ renderAnt { position, direction } =
         , width "10"
         , height "10"
         ]
-        [ text_ [ x "0", y "0" ] [ text "Can't figure this out" ]
-        ]
+        []
 
 
 colourForAnt : Direction -> String
