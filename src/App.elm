@@ -182,8 +182,7 @@ renderCell { position, colour } =
 renderCells : Board -> List (Svg Msg)
 renderCells board =
     AllDict.toList board
-        |> List.map Tuple.second
-        |> List.map renderCell
+        |> List.map (Tuple.second >> renderCell)
 
 
 renderAnt : Ant -> Svg Msg
