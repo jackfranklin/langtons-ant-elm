@@ -161,17 +161,22 @@ colourToSvgFill colour =
             "black"
 
 
-renderCell : Cell -> Svg Msg
-renderCell { position, colour } =
+renderItem : Coord -> String -> Svg Msg
+renderItem ( xPos, yPos ) colour =
     rect
         [ stroke "black"
-        , fill (colourToSvgFill colour)
-        , x (toString ((Tuple.first position) * 10 - 5))
-        , y (toString ((Tuple.second position) * 10 - 5))
+        , fill colour
+        , x (toString (xPos * 10 - 5))
+        , y (toString (yPos * 10 - 5))
         , width "10"
         , height "10"
         ]
         []
+
+
+renderCell : Cell -> Svg Msg
+renderCell { position, colour } =
+    renderItem position (colourToSvgFill colour)
 
 
 renderCells : Board -> List (Svg Msg)
@@ -183,15 +188,7 @@ renderCells board =
 
 renderAnt : Ant -> Svg Msg
 renderAnt { position, direction } =
-    rect
-        [ stroke "black"
-        , fill (colourForAnt direction)
-        , x (toString ((Tuple.first position) * 10 - 5))
-        , y (toString ((Tuple.second position) * 10 - 5))
-        , width "10"
-        , height "10"
-        ]
-        []
+    renderItem position (colourForAnt direction)
 
 
 colourForAnt : Direction -> String
@@ -218,4 +215,4 @@ view { board, ant } =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every (50 * Time.millisecond) Tick
+    Time.every (Time.millisecond) Tick
