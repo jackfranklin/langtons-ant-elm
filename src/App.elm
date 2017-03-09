@@ -1,10 +1,10 @@
 module App exposing (..)
 
 import Html exposing (Html)
-import AllDict exposing (AllDict)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, width, height, x, y, viewBox, stroke)
 import Time exposing (Time)
+import Dict exposing (Dict)
 
 
 type alias Coord =
@@ -36,7 +36,7 @@ type alias Cell =
 
 
 type alias Board =
-    AllDict Coord Cell String
+    Dict Coord Cell
 
 
 type alias Model =
@@ -47,7 +47,7 @@ type alias Model =
 
 initialCells : Board
 initialCells =
-    AllDict.fromList toString []
+    Dict.fromList []
 
 
 initialAnt : Ant
@@ -110,7 +110,7 @@ getNextDirection { direction } { colour } =
 
 getCell : Board -> Coord -> Cell
 getCell board coord =
-    AllDict.get coord board |> Maybe.withDefault (Cell coord White)
+    Dict.get coord board |> Maybe.withDefault (Cell coord White)
 
 
 flipColour : Colour -> Colour
@@ -133,7 +133,7 @@ tick { ant, board } =
             { currentCell | colour = flipColour currentCell.colour }
 
         newBoard =
-            AllDict.insert ant.position newCell board
+            Dict.insert ant.position newCell board
 
         newAnt1 =
             { ant | direction = getNextDirection ant currentCell }
@@ -181,7 +181,7 @@ renderCell { position, colour } =
 
 renderCells : Board -> List (Svg Msg)
 renderCells board =
-    AllDict.toList board
+    Dict.toList board
         |> List.map (Tuple.second >> renderCell)
 
 
