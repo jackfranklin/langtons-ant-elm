@@ -1,7 +1,7 @@
 module App exposing (..)
 
 import Html exposing (Html)
-import Svg exposing (Svg, rect, svg)
+import Svg exposing (Svg, rect, svg, g)
 import Svg.Attributes exposing (fill, width, height, x, y, viewBox, stroke)
 import Time exposing (Time)
 import Dict exposing (Dict)
@@ -47,7 +47,7 @@ type alias Model =
 
 initialCells : Board
 initialCells =
-    Dict.fromList []
+    Dict.empty
 
 
 initialAnt : Ant
@@ -179,10 +179,9 @@ renderCell { position, colour } =
     renderItem position (colourToSvgFill colour)
 
 
-renderCells : Board -> List (Svg Msg)
+renderCells : Board -> Svg Msg
 renderCells board =
-    Dict.toList board
-        |> List.map (Tuple.second >> renderCell)
+    g [] (Dict.values board |> List.map renderCell)
 
 
 renderAnt : Ant -> Svg Msg
@@ -209,7 +208,9 @@ colourForAnt direction =
 view : Model -> Html Msg
 view { board, ant } =
     svg [ width "600", height "600", viewBox "-500 -500 1000 1000" ]
-        (renderCells board ++ [ renderAnt ant ])
+        [ renderCells board
+        , renderAnt ant
+        ]
 
 
 subscriptions : Model -> Sub Msg
