@@ -1,6 +1,6 @@
 module Main exposing (main)
 
-import App exposing (..)
+import App exposing (init, subscriptions, update, view)
 import Browser
 
 

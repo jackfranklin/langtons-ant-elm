@@ -1,4 +1,4 @@
-module App exposing (Ant, Board, Cell, Colour(..), Coord, Direction(..), Model, Msg(..), colourForAnt, colourToSvgFill, flipColour, getCell, getCoordInFront, getNextDirection, init, initialAnt, initialCells, renderAnt, renderCell, renderCells, renderItem, subscriptions, tick, update, view)
+module App exposing (init, subscriptions, update, view)
 
 import Dict exposing (Dict)
 import Html exposing (Html)
