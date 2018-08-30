@@ -1,10 +1,11 @@
-module App exposing (..)
+module App exposing (main)
 
-import Html exposing (Html)
-import Svg exposing (Svg, rect, svg, g)
-import Svg.Attributes exposing (fill, width, height, x, y, viewBox, stroke)
-import Time exposing (Time)
+import Browser
 import Dict exposing (Dict)
+import Html exposing (Html)
+import Svg exposing (Svg, g, rect, svg)
+import Svg.Attributes exposing (fill, height, stroke, viewBox, width, x, y)
+import Time
 
 
 type alias Coord =
@@ -61,7 +62,7 @@ init =
 
 
 type Msg
-    = Tick Time
+    = Tick
 
 
 getCoordInFront : Ant -> Coord
@@ -141,13 +142,13 @@ tick { ant, board } =
         newAnt2 =
             { newAnt1 | position = getCoordInFront newAnt1 }
     in
-        Model newBoard newAnt2
+    Model newBoard newAnt2
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Tick _ ->
+        Tick ->
             ( tick model, Cmd.none )
 
 
@@ -166,8 +167,8 @@ renderItem ( xPos, yPos ) colour =
     rect
         [ stroke "black"
         , fill colour
-        , x (toString (xPos * 10 - 5))
-        , y (toString (yPos * 10 - 5))
+        , x (String.fromInt (xPos * 10 - 5))
+        , y (String.fromInt (yPos * 10 - 5))
         , width "10"
         , height "10"
         ]
@@ -215,4 +216,14 @@ view { board, ant } =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every (Time.millisecond) Tick
+    Time.every 1.0 (always Tick)
+
+
+main : Program {} Model Msg
+main =
+    Browser.element
+        { view = view
+        , init = \_ -> init
+        , update = update
+        , subscriptions = subscriptions
+        }
