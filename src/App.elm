@@ -1,5 +1,6 @@
-module App exposing (init, subscriptions, update, view)
+module App exposing (main)
 
+import Browser
 import Dict exposing (Dict)
 import Html exposing (Html)
 import Svg exposing (Svg, g, rect, svg)
@@ -215,4 +216,14 @@ view { board, ant } =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 1.0 (\_ -> Tick)
+    Time.every 1.0 (always Tick)
+
+
+main : Program {} Model Msg
+main =
+    Browser.element
+        { view = view
+        , init = \_ -> init
+        , update = update
+        , subscriptions = subscriptions
+        }
